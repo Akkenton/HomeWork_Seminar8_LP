@@ -8,3 +8,57 @@
 // 5 2 6 7
 
 // Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов: 1 строка
+
+// Некорректная информация в примере- наименьшая сумма элементов в матрице примера в НУЛЕВОЙ строке.
+
+int SummRowElementOfArray(int[,] array, int row, int summRow, int minRowNumber, out int minRow)
+{
+    int tempSumm = 0;     // временная переменная для сравнения суммы
+    minRow = minRowNumber;
+
+    for (int i = 0; i < array.GetLength(1); i++)   // внутренний цикл для суммирования элементов строки
+    {
+        tempSumm += array[row, i];
+    }
+    System.Console.WriteLine($"Сумма {row} строки = {tempSumm}");
+
+    if (tempSumm < summRow)         // условие для перезаписи переменных
+    {
+        summRow = tempSumm;
+        minRow = row;
+    }
+    return summRow;
+}
+
+// --------------------------- ТЕЛО ПРОГРАММЫ
+
+Console.Clear();
+int summRow = 0;      // переменная для хранения суммы элементов строки(для сравнения)
+int minRowNumber = 0;  // переменная для хранения номер строки с минимальной суммой элементов
+int minRow = 0;        // объявление глобальной переменной для типа out в методе
+int[,] array = {             // объявляем массив вручную
+                {5,9,2,3},
+                {1,4,7,2},
+                {8,4,2,4},
+                {5,2,6,7}
+                };
+
+for (int i = 0; i < array.GetLength(0); i++)             // внешний цикл для двумерного массива, в котором будет использоваться метод подсчета элементов
+{
+    if (i == 0)                                          // условие для обработки нулевой строки
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            summRow += array[i, j];
+        }
+
+        System.Console.WriteLine($"Сумма {i} строки = {summRow}");
+    }
+    else
+    {
+        summRow = SummRowElementOfArray(array, i, summRow, minRowNumber, out minRow);   // здесь идет присвоение суммы. Значение меняется, если в меторде срабатывает конечное условие if
+        minRowNumber = minRow;                                                          // здесь мы записываем номер строки
+    }
+}
+
+System.Console.WriteLine($"Строка с наименьшей суммой элементов: {minRowNumber}");
